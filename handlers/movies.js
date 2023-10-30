@@ -1,4 +1,4 @@
-const axios = require('axios');
+const { axios } = require('../axios');
 
 async function discoverMovies(req, res) {
   const genre = req.query.genre;
@@ -9,9 +9,7 @@ async function discoverMovies(req, res) {
   }
 
   try {
-    const movies = await axios.get(
-      `${process.env.TMDB_BASE_URL}/discover/movie?api_key=${process.env.TMDB_API_KEY}&with_genres=${genre}`
-    );
+    const movies = await axios.get(`/discover/movie?api_key=${process.env.TMDB_API_KEY}&with_genres=${genre}`);
 
     res.send(movies.data);
   } catch (error) {
@@ -28,7 +26,7 @@ async function getMovie(req, res) {
   }
 
   try {
-    const movie = await axios.get(`${process.env.TMDB_BASE_URL}/movie/${id}?api_key=${process.env.TMDB_API_KEY}`);
+    const movie = await axios.get(`/movie/${id}?api_key=${process.env.TMDB_API_KEY}`);
 
     res.send(movie.data);
   } catch (error) {
