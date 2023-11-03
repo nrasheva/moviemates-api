@@ -11,7 +11,10 @@ async function discoverMovies(req, res) {
   try {
     const movies = await axios.get(`/discover/movie?api_key=${process.env.TMDB_API_KEY}&with_genres=${genre}`);
 
-    res.send(movies.data);
+    // Return 5 random movies
+    const randomMovies = movies.data.results.sort(() => Math.random() - 0.5).slice(0, 5);
+
+    res.send(randomMovies);
   } catch (error) {
     console.log(error);
   }
