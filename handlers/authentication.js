@@ -17,14 +17,14 @@ async function login(req, res) {
     const user = await User.findOne({ email });
 
     if (!user) {
-      res.status(400).json({ message: 'invalid email or password' });
+      res.status(403).json({ message: 'invalid email or password' });
       return;
     }
 
     const match = await bcrypt.compare(password, user.password);
 
     if (!match) {
-      return res.status(400).json({ message: 'invalid email or password' });
+      return res.status(403).json({ message: 'invalid email or password' });
     }
 
     const token = await jwt.sign({ email: user.email, id: user._id }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
@@ -49,7 +49,7 @@ async function register(req, res) {
     const user = await User.findOne({ email });
 
     if (user) {
-      res.status(400).json({ message: 'email already in use' });
+      res.status(409).json({ message: 'email already in use' });
       return;
     }
 
