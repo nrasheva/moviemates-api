@@ -16,7 +16,7 @@ async function discoverMovies(req, res) {
 
     res.send(randomMovies);
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ message: error });
   }
 }
 
@@ -33,7 +33,7 @@ async function getMovie(req, res) {
 
     res.send(movie.data);
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ message: error });
   }
 }
 

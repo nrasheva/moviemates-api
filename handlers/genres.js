@@ -6,7 +6,7 @@ async function getGenres(req, res) {
 
     res.send(genres.data.genres);
   } catch (error) {
-    console.log(error);
+    res.status(500).json({ message: error });
   }
 }
 
