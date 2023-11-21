@@ -24,6 +24,31 @@ async function createComment(req, res) {
   }
 }
 
+async function deleteComment(req, res) {
+  try {
+    const id = req.query.id;
+    const userId = req.header('id');
+
+    const comment = await Comment.findById(id);
+
+    const author = comment.author.toHexString();
+
+    if (author !== userId) {
+      res.status(403).json({ message: 'not allowed to access resource' });
+      return;
+    }
+
+    await Comment.findByIdAndDelete(id);
+
+    // Delete comment children
+    await Comment.deleteMany({ parent: id });
+
+    res.status(204).send();
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+}
+
 async function editComment(req, res) {
   try {
     const content = req.body.content;
@@ -74,4 +99,4 @@ async function getComments(req, res) {
   }
 }
 
-module.exports = { createComment, editComment, getComments };
+module.exports = { createComment, deleteComment, editComment, getComments };
