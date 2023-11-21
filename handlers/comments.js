@@ -9,6 +9,7 @@ async function createComment(req, res) {
     const comment = {
       author: authorId,
       content,
+      created: Math.floor(new Date().getTime() / 1000.0),
       movie,
     };
 
