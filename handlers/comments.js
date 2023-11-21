@@ -4,10 +4,10 @@ async function createComment(req, res) {
   try {
     const { content, movie, parent } = req.body;
 
-    const id = req.header('id');
+    const authorId = req.header('id');
 
     const comment = {
-      author: id,
+      author: authorId,
       content,
       movie,
     };
@@ -19,6 +19,39 @@ async function createComment(req, res) {
     await Comment.create(comment);
 
     res.status(201).send();
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+}
+
+async function editComment(req, res) {
+  try {
+    const content = req.body.content;
+    const id = req.query.id;
+    const userId = req.header('id');
+
+    if (!content) {
+      res.status(400).json({ message: 'content not provided' });
+      return;
+    }
+
+    const comment = await Comment.findById(id);
+
+    const author = comment.author.toHexString();
+
+    if (author !== userId) {
+      res.status(403).json({ message: 'not allowed to access resource' });
+      return;
+    }
+
+    const updatedComment = await Comment.findByIdAndUpdate(id, { content, edited: true }, { new: true });
+
+    if (!updatedComment) {
+      res.status(404).json({ message: 'comment not found' });
+      return;
+    }
+
+    res.status(200).json({ updatedComment });
   } catch (error) {
     res.status(500).json({ message: error });
   }
@@ -41,4 +74,4 @@ async function getComments(req, res) {
   }
 }
 
-module.exports = { createComment, getComments };
+module.exports = { createComment, editComment, getComments };
