@@ -16,12 +16,14 @@ async function discoverMovies(req, res) {
       `/discover/movie?api_key=${process.env.TMDB_API_KEY}&page=${page}&with_genres=${genre}`
     );
 
-    // Return 5 random movies
-    const randomMovies = movies.data.results.sort(() => Math.random() - 0.5).slice(0, 5);
+    const response = {
+      movies: movies.data.results.sort(() => Math.random() - 0.5), // Randomize order
+      total_pages: movies.data.total_pages,
+    };
 
-    res.send(randomMovies);
+    res.send(response);
   } catch (error) {
-    res.status(error.response.status ? error.response.status : 500).json({ message: error });
+    res.status(error.response && error.response.status ? error.response.status : 500).json({ message: error });
   }
 }
 
@@ -38,7 +40,7 @@ async function getMovie(req, res) {
 
     res.send(movie.data);
   } catch (error) {
-    res.status(error.response.status ? error.response.status : 500).json({ message: error });
+    res.status(error.response && error.response.status ? error.response.status : 500).json({ message: error });
   }
 }
 
