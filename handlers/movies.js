@@ -1,15 +1,20 @@
 const { axios } = require('../axios');
 
 async function discoverMovies(req, res) {
-  const genre = req.query.genre;
+  const { genre, page } = req.query;
 
   if (!genre) {
     res.status(400).json({ message: 'genre parameter not provided' });
     return;
+  } else if (isNaN(page)) {
+    res.status(400).json({ message: 'page parameter must be a number' });
+    return;
   }
 
   try {
-    const movies = await axios.get(`/discover/movie?api_key=${process.env.TMDB_API_KEY}&with_genres=${genre}`);
+    const movies = await axios.get(
+      `/discover/movie?api_key=${process.env.TMDB_API_KEY}&page=${page}&with_genres=${genre}`
+    );
 
     // Return 5 random movies
     const randomMovies = movies.data.results.sort(() => Math.random() - 0.5).slice(0, 5);
