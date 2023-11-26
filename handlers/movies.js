@@ -6,7 +6,7 @@ async function discoverMovies(req, res) {
   if (!genre) {
     res.status(400).json({ message: 'genre parameter not provided' });
     return;
-  } else if (isNaN(page)) {
+  } else if (!page || isNaN(page)) {
     res.status(400).json({ message: 'page parameter must be a number' });
     return;
   }

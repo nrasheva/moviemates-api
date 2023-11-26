@@ -4,6 +4,14 @@ async function createComment(req, res) {
   try {
     const { content, movie, parent } = req.body;
 
+    if (!content || !content.length) {
+      res.status(400).json({ message: 'content not provided' });
+      return;
+    } else if (!movie || typeof movie !== 'number') {
+      res.status(400).json({ message: 'movie must be a number' });
+      return;
+    }
+
     const authorId = req.header('id');
 
     const comment = {
