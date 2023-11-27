@@ -28,4 +28,16 @@ async function addMovie(req, res) {
   }
 }
 
-module.exports = { addMovie };
+async function getWatchlist(req, res) {
+  const userId = req.header('id');
+
+  try {
+    const user = await User.findById(userId);
+
+    res.status(200).json(user.watchlist);
+  } catch (error) {
+    res.status(500).json({ message: error });
+  }
+}
+
+module.exports = { addMovie, getWatchlist };
