@@ -4,6 +4,7 @@ const { createComment, deleteComment, editComment, getComments } = require('./ha
 const { discoverMovies, getMovie } = require('./handlers/movies');
 const { getGenres } = require('./handlers/genres');
 const { login, register } = require('./handlers/authentication');
+const { addMovie } = require('./handlers/watchlist');
 
 const router = express.Router();
 
@@ -16,5 +17,6 @@ router.post('/comment', authMiddleware, createComment);
 router.post('/login', login);
 router.post('/register', register);
 router.put('/comment', editComment);
+router.post('/watchlist', authMiddleware, addMovie);
 
 module.exports = { router };

@@ -1,19 +1,18 @@
 const { Comment } = require('../models/Comment');
 
 async function createComment(req, res) {
+  const authorId = req.header('id');
+  const { content, movie, parent } = req.body;
+
+  if (!content || !content.length) {
+    res.status(400).json({ message: 'content not provided' });
+    return;
+  } else if (!movie || typeof movie !== 'number') {
+    res.status(400).json({ message: 'movie must be a number' });
+    return;
+  }
+
   try {
-    const { content, movie, parent } = req.body;
-
-    if (!content || !content.length) {
-      res.status(400).json({ message: 'content not provided' });
-      return;
-    } else if (!movie || typeof movie !== 'number') {
-      res.status(400).json({ message: 'movie must be a number' });
-      return;
-    }
-
-    const authorId = req.header('id');
-
     const comment = {
       author: authorId,
       content,
@@ -34,10 +33,15 @@ async function createComment(req, res) {
 }
 
 async function deleteComment(req, res) {
-  try {
-    const id = req.query.id;
-    const userId = req.header('id');
+  const id = req.query.id;
+  const userId = req.header('id');
 
+  if (!id) {
+    res.status(400).json({ message: 'id parameter not provided' });
+    return;
+  }
+
+  try {
     const comment = await Comment.findById(id);
 
     const author = comment.author.toHexString();
@@ -59,16 +63,19 @@ async function deleteComment(req, res) {
 }
 
 async function editComment(req, res) {
+  const content = req.body.content;
+  const id = req.query.id;
+  const userId = req.header('id');
+
+  if (!content) {
+    res.status(400).json({ message: 'content not provided' });
+    return;
+  } else if (!id) {
+    res.status(400).json({ message: 'id parameter not provided' });
+    return;
+  }
+
   try {
-    const content = req.body.content;
-    const id = req.query.id;
-    const userId = req.header('id');
-
-    if (!content) {
-      res.status(400).json({ message: 'content not provided' });
-      return;
-    }
-
     const comment = await Comment.findById(id);
 
     const author = comment.author.toHexString();
