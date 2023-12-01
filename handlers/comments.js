@@ -107,7 +107,7 @@ async function getComments(req, res) {
   }
 
   try {
-    const comments = await Comment.find({ movie: id }).exec();
+    const comments = await Comment.find({ movie: id }).populate('author', 'email').exec();
 
     res.status(200).json(comments);
   } catch (error) {
