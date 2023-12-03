@@ -19,6 +19,6 @@ router.post('/comment', authMiddleware, createComment);
 router.post('/login', login);
 router.post('/register', register);
 router.post('/watchlist', authMiddleware, addMovie);
-router.put('/comment', editComment);
+router.put('/comment', authMiddleware, editComment);
 
 module.exports = { router };
