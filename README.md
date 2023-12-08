@@ -49,7 +49,7 @@ npm run start
 
 ## Environment variables
 
-This project uses [Dotenv Vault](https://www.dotenv.org/docs/security/vault) to securely store environment variables. You will need to add the following environmental variables to your .env file.
+This project uses [Dotenv Vault](https://www.dotenv.org/docs/security/vault) to securely store environment variables. You will need to add the following environmental variables to your .env file:
 
 `MONGOOSE_URI`
 
