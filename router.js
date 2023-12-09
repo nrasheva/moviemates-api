@@ -8,17 +8,25 @@ const { addMovie, deleteMovie, getWatchlist } = require('./handlers/watchlist');
 
 const router = express.Router();
 
-router.delete('/comment', authMiddleware, deleteComment);
-router.delete('/watchlist', authMiddleware, deleteMovie);
-router.get('/comments', authMiddleware, getComments);
-router.get('/discoverMovies', discoverMovies);
-router.get('/getGenres', getGenres);
-router.get('/getMovie', getMovie);
-router.get('/watchlist', authMiddleware, getWatchlist);
-router.post('/comment', authMiddleware, createComment);
 router.post('/login', login);
 router.post('/register', register);
-router.post('/watchlist', authMiddleware, addMovie);
+
+router.delete('/comment', authMiddleware, deleteComment);
+router.get('/comments', authMiddleware, getComments);
+router.post('/comment', authMiddleware, createComment);
 router.put('/comment', authMiddleware, editComment);
+
+router.get('/getGenres', getGenres);
+
+router.get('/discoverMovies', discoverMovies);
+router.get('/getMovie', getMovie);
+
+router.delete('/watchlist', authMiddleware, deleteMovie);
+router.get('/watchlist', authMiddleware, getWatchlist);
+router.post('/watchlist', authMiddleware, addMovie);
+
+router.get('/', (req, res) =>
+  res.status(200).json({ status: `Moviemates API running in a ${process.env.NODE_ENV} environment` })
+);
 
 module.exports = { router };
